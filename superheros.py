@@ -38,6 +38,7 @@ class Armor():
 
 
 class Hero():
+    #TODO: Make a way for hero abilities to run out or be lost, and watch for heros still having abilities
     def __init__(self, name, starting_health=100):
         '''
         Initiate the hero class with name and starting health
@@ -101,18 +102,46 @@ class Hero():
         else:
             return True
         
+    def fight(self, opponent):
+        '''
+        A function that takes in a hero to fight and pits them agians the current hero untill one dies or no ailities are left
+            Args:
+                opponent (Hero): a hero object 
+            Returns:
+                outcome (string): either which hero won or that the fight endded in a draw
+        '''
+        while self.is_alive() and opponent.is_alive():
+            hero_attack = self.attack()
+            opponent_attack = opponent.attack()
+            self.take_damage(opponent_attack)
+            opponent.take_damage(hero_attack)
+        if self.is_alive() == False and opponent.is_alive == False:
+            print('Draw! Both heros died from their injuries!')
+        elif self.is_alive() == False:
+            print(f'{opponent.name} won!')
+        elif opponent.is_alive() == False:
+            print(f'{self.name} won!')
 
 if __name__ == '__main__':
     # Test the superhero classes by running `python3 superheros.py`
-    ability = Ability('Flick', 4)
+    ability = Ability('Kick', 15)
     another_ability = Ability('Punch', 10)
     armor = Armor('Shirt', 5)
     another_armor = Armor('Mouth Guard', 8)
 
-    hero = Hero('Bob Johson')
-    hero.add_armor(armor)
-    hero.add_armor(another_armor)
-    hero.take_damage(20)
-    print('defend', hero.current_health)
-    print(hero.is_alive())
+    Bob = Hero('Bob Johson')
+    Bob.add_ability(ability)
+    Bob.add_ability(another_ability)
+    Bob.add_armor(armor)
+    Bob.add_armor(another_armor)
+
+    Jan_The_Man = Hero('Jan the Man')
+    Jan_The_Man.add_ability(ability)
+    Jan_The_Man.add_ability(another_ability)
+    Jan_The_Man.add_armor(armor)
+    Jan_The_Man.add_armor(another_armor)
+
+    Bob.fight(Jan_The_Man)
+
+
 
