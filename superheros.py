@@ -1,4 +1,5 @@
 import random
+import math
 from functools import reduce
 
 class Ability():
@@ -17,6 +18,22 @@ class Ability():
     def attack(self):
         ''' A function that returns random int between 0 and the initilized max_damage property'''
         return random.randint(0, self.max_damage)
+
+class Weapon():
+    def __init__(self, name, attack_strength):
+        '''
+        Initiate the weapons subclass with name and attack_strength
+            Args:
+                name (string): a single owrd discriptor of the weapon
+                attack_strength (int): value for the weapons may power
+            Returns:
+                weapon (object): new weapon object
+        '''
+        super().__init__(name, attack_strength)
+
+    def attack(self):
+        '''A function that returns a randome int between 0 and half the iniitlaized max_damage property'''
+        return random.randint(0, math.floor(self.max_damage / 2))
 
 
 class Armor():
