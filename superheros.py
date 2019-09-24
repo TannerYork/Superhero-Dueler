@@ -24,7 +24,7 @@ class Weapon():
         '''
         Initiate the weapons subclass with name and attack_strength
             Args:
-                name (string): a single owrd discriptor of the weapon
+                name (string): a single word descriptor of the weapon
                 attack_strength (int): value for the weapons may power
             Returns:
                 weapon (object): new weapon object
@@ -138,6 +138,33 @@ class Hero():
             print(f'{opponent.name} won!')
         elif opponent.is_alive() == False:
             print(f'{self.name} won!')
+
+class Team():
+    def __init__(self, name):
+        '''
+        Initialize the team class with name and heros properties
+            Args:
+                name (string): a single word descriptor of the team
+            Returns:
+                team (object): a new team object
+        '''
+        self.name = name
+        self.heros = []
+
+    def add_hero(self, hero):
+        '''A function for adding a new hero to the team'''
+        self.heros.append(hero)
+
+    def remove_hero(self, hero_name):
+        '''A function for removing a hero from the team'''
+        for index, hero in enumerate(self.heros):
+            if hero.name == hero_name:
+                del self.heros[index]
+
+    def view_all_heros(self):
+        '''A function for seeing all the heros on the team'''
+        heros = ' '.join(self.heros)
+        print(heros)
 
 if __name__ == '__main__':
     # Test the superhero classes by running `python3 superheros.py`
