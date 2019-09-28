@@ -222,8 +222,8 @@ def create_set():
 
 def test_armor():
     armor = superheroes.Hero("The Ring", 200)
-    for i in range(0, 500):
-        defense = armor.defend(i)
+    for _ in range(0, 500):
+        defense = armor.defend()
         assert (defense <= 200 and defense >= 0)
 
 
@@ -246,7 +246,7 @@ def test_hero_defense():
     jodie = superheroes.Hero("Jodie Foster")
     gauntlets = superheroes.Armor("Gauntlets", 30)
     jodie.add_armor(gauntlets)
-    defense = jodie.defend(20)
+    defense = jodie.defend()
     assert defense >= 0 and defense <= 30
 
 
@@ -259,8 +259,8 @@ def test_hero_defense_mean_value():
     iterations = 8000
     total_attack = 0
     accepted_window = 400
-    for i in range(iterations):
-        attack_value = athena.defend(i)
+    for _ in range(iterations):
+        attack_value = athena.defend()
         assert attack_value >= 0 and attack_value <= strength
         total_attack += attack_value
 
@@ -290,8 +290,8 @@ def test_hero_defense_standard_deviation():
     defenses = list()
     total_defend = 0
     number_tests = 100
-    for i in range(number_tests):
-        defense = willow_waffle.defend(i)
+    for _ in range(number_tests):
+        defense = willow_waffle.defend()
         defenses.append(defense)
         total_defend += defense
     mean = total_defend / number_tests
@@ -310,7 +310,7 @@ def test_dead_hero_defense():
     hero = superheroes.Hero("Vlaad", 0)
     garlic = superheroes.Armor("Garlic", 30000)
     hero.add_ability(garlic)
-    assert hero.defend(20) == 0
+    assert hero.defend() == 0
 
 
 def test_hero_equip_armor():
@@ -327,7 +327,7 @@ def test_hero_defend_multi_armor():
     science = superheroes.Armor("Science", 9000)
     jodie.add_armor(gauntlets)
     jodie.add_armor(science)
-    defend = jodie.defend(20)
+    defend = jodie.defend()
     assert defend <= 13000 and defend >= 0
 
 
