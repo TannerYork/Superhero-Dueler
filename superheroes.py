@@ -255,7 +255,7 @@ class Arena():
         '''A gernator method for prompting the suer for values to create a Hero instance'''
         print('To create a hero follow the steps below:')
         name = valid_str_input('Name: ')
-        health = valid_int_input(f'How much health do you want {name} to have? ')
+        health = greater_than_zero_input(f'How much health do you want {name} to have? ')
         numb_armors = valid_int_input(f'How much armor do you want {name} to have? ')
         armors = [self.create('Armor', Armor) for index in range(numb_armors)]
         numb_abilities = valid_int_input(f'How may abilities do you want {name} to have? ')
@@ -273,7 +273,7 @@ class Arena():
         '''A gernator method for prompting the user for values to create team one for the arena'''
         print('Create the first team by following the steps below: ')
         name = valid_str_input('Team Name: ')
-        numb_heroes = valid_int_input('How many heroes are on this team? ')
+        numb_heroes = greater_than_zero_input('How many heroes are on this team? ')
         self.team_one = Team(name)
         for _ in range(numb_heroes):
             self.team_one.add_hero(self.create_hero())
@@ -282,7 +282,7 @@ class Arena():
         '''A gernator method for prompting the user for values to create team two for the arena'''
         print('Create the second team by following the steps below: ')
         name = valid_str_input('Team Name: ')
-        numb_heroes = valid_int_input('How many heroes are on this team? ')
+        numb_heroes = greater_than_zero_input('How many heroes are on this team? ')
         self.team_two = Team(name)
         for _ in range(numb_heroes):
             self.team_two.add_hero(self.create_hero())
@@ -310,7 +310,7 @@ class Arena():
             for hero in alive_team_one:
                 print(f'{hero.name} survied...')
             for hero in alive_team_two:
-                print(f'{hero.nam} survied...')
+                print(f'{hero.name} survied...')
         team_one_kd_average = adverage_kd(self.team_one.heroes)
         team_two_kd_average = adverage_kd(self.team_two.heroes)
 
@@ -325,11 +325,23 @@ def valid_str_input(prompt):
         user_input = input('Invaled input, try agian: ')
     return user_input
 
+def is_num_equal_to_or_greater_than_zero(user_input):
+    if user_input.isnumeric():
+        if int(user_input) > 0:
+            return True
+    else:
+        return False
+
 def valid_int_input(prompt):
     user_input = input(prompt)
-    while not user_input.isnumeric():
+    while not user_input.isnumeric() and not is_num_equal_to_or_greater_than_zero(user_input):
         user_input = input('Positive integer required, try agian: ')
     return int(user_input)
+
+def greater_than_zero_input(prompt):
+    user_input = valid_int_input(prompt)
+    while user_input <= 0: user_input = valid_int_input('Needs to be greater then zero: ')
+    return user_input
 
 def adverage_kd(heroes):
     team_one_kd_sum = 0
