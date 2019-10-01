@@ -137,29 +137,24 @@ class Hero():
             Returns:
                 outcome (string): either which hero won or that the fight endded in a draw
         '''
-        if len(self.abilities) != 0 and len(opponent.abilities) != 0:
-            print(f'{self.name} and {opponent.name} are fighting!')
-            while self.is_alive() and opponent.is_alive():
-                hero_attack = self.attack()
-                opponent_attack = opponent.attack()
-                self.take_damage(opponent_attack)
-                opponent.take_damage(hero_attack)
-                if self.is_alive() == False and opponent.is_alive == False:
-                    print('Draw! Both heroes died from their injuries!')
-                    self.add_kill(1)
-                    self.add_death(1)
-                elif self.is_alive() == False:
-                    print(f'{opponent.name} won!')
-                    self.add_death(1)
-                    opponent.add_kill(1)
-                elif opponent.is_alive() == False:
-                    print(f'{self.name} won!')
-                    self.add_kill(1)
-                    opponent.add_death(1)
-            return True
-        else:
-            print(f'{self.name} and {opponent.name} tried to fight but either of them couldn\'t really do much')
-            return False
+        print(f'{self.name} and {opponent.name} are fighting!')
+        while self.is_alive() and opponent.is_alive():
+            hero_attack = self.attack()
+            opponent_attack = opponent.attack()
+            self.take_damage(opponent_attack)
+            opponent.take_damage(hero_attack)
+            if self.is_alive() == False and opponent.is_alive() == False:
+                print('Draw! Both heroes died from their injuries!')
+                self.add_kill(1)
+                self.add_death(1)
+            elif self.is_alive() == False:
+                print(f'{opponent.name} won!')
+                self.add_death(1)
+                opponent.add_kill(1)
+            elif opponent.is_alive() == False:
+                print(f'{self.name} won!')
+                self.add_kill(1)
+                opponent.add_death(1)
 
 
 class Team():
@@ -194,18 +189,32 @@ class Team():
     def heroes_alive(self):
         return [hero for hero in self.heroes if hero.is_alive()]
 
-    def attack(self, other_team):
+    def fight_should_continue(self, opponent, team_alive, opponents_alive):
+        '''A helper function for checking if a fight should coninue or not'''
+        team_abilities = sum(len(hero.abilities) for hero in self.heroes)
+        opponent_abilities = sum(len(hero.abilities) for hero in opponent.heroes)
+        if len(team_alive) > 0 and len(opponents_alive) > 0:
+            if team_abilities > 0 and opponent_abilities > 0:
+                return True
+            elif team_abilities <= 0 and opponent_abilities > 0:
+                return True
+            elif team_abilities > 0 and opponent_abilities <= 0:
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    def attack(self, opponent):
         '''A method for battling the team against another'''
         team_alive = self.heroes_alive()
-        opponents_alive = other_team.heroes_alive()
-        team_abilities = sum(len(hero.abilities) for hero in self.heroes)
-        other_abilities = sum(len(hero.abilities) for hero in other_team.heroes)
-        while len(team_alive) > 0 and len(opponents_alive) > 0 and team_abilities != 0 and other_abilities != 0:
+        opponents_alive = opponent.heroes_alive()
+        while self.fight_should_continue(opponent, team_alive, opponents_alive):
             team_hero = random.choice(team_alive)
             opponent_hero = random.choice(opponents_alive)
             team_hero.fight(opponent_hero)
             team_alive = self.heroes_alive()
-            opponents_alive = other_team.heroes_alive()
+            opponents_alive = opponent.heroes_alive()
 
     def revive_heroes(self, health=100):
         '''A method for resetting each heroes health to its starting_health'''
